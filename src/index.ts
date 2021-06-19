@@ -10,21 +10,11 @@ app.set("view engine", "ejs");
 app.use("/static", Express.static(path.join(__dirname, "../static")));
 
 app.get("/", (req, res) => {
-    res.redirect("https://discord.com/api/oauth2/authorize?client_id=836524877271269406&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthenticated&response_type=token&scope=identify")
+    res.redirect("https://discord.com/api/oauth2/authorize?client_id=836524877271269406&redirect_uri=https%3A%2F%2Fmcc.invite.land%2Fauthenticated&response_type=token&scope=identify")
 });
 
 app.get("/authenticated", (req, res) => {
-    const code = req.query.code;
-    // fetch('https://discord.com/api/users/@me', {
-    //     headers: {
-    //         authorization: `${tokenType} ${accessToken}`,
-    //     },
-    // })
-
-    res.setHeader("script-src", "nonce-r@nd0m")
-
     res.render("auth");
-
 });
 
 app.listen(3000, () => {
