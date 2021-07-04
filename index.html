@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="main.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="overlay"></div>
+
+    <div class="modal">
+        <h1>Authenticated successfully.</h1>
+
+        <div class="section account">
+            <img id="pfp"
+                src="https://cdn.discordapp.com/avatars/572123427788292096/b945a1a396a784448c282786b4e5787c.jpg" />
+            <p><span id="username"></span><span id="discrim"></span><br /><a id="notyou" href="/">not you?</a></p>
+        </div>
+
+        <div class="section">
+            <span>Server IP</span>
+            <input onclick="select()" value="invite.land">
+        </div>
+
+        <div class="section">
+            <span>Copy & paste</span>
+            <input onclick="select()" id="codeContainer" readonly value="/authenticate">
+        </div>
+
+        <img src="./anim.gif" />
+    </div>
+
+    <script>
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
+        const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
+
+        if(!accessToken) window.location.href = "https://discord.com/oauth2/authorize?client_id=836524877271269406&redirect_uri=http%3A%2F%2F127.0.0.1%3A5500%2Findex.html&response_type=token&scope=identify";
+
+        document.getElementById("codeContainer").value = `/auth ${btoa(tokenType + " " + accessToken)}`;
+
+        fetch('https://discord.com/api/users/@me', {
+            headers: {
+                authorization: `${tokenType} ${accessToken}`,
+            },
+        })
+            .then(result => result.json())
+            .then(response => {
+                const { username, discriminator } = response;
+                const pfp = `https://cdn.discordapp.com/avatars/${response.id}/${response.avatar}.jpg`
+
+                document.getElementById("pfp").src = pfp;
+                document.getElementById("username").innerText = username;
+                document.getElementById("discrim").innerHTML = discriminator;
+
+                document.querySelector(".account").style.display = "block";
+            })
+            .catch(console.error);
+    </script>
+</body>
+
+</html>
