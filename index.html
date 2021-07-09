@@ -38,7 +38,7 @@
         const fragment = new URLSearchParams(window.location.hash.slice(1));
         const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 
-        if(!accessToken) window.location.href = "https://discord.com/api/oauth2/authorize?client_id=836524877271269406&redirect_uri=https%3A%2F%2Fauth.landsmp.com&response_type=code&scope=identify";
+        if(!accessToken) window.location.href = "https://discord.com/api/oauth2/authorize?client_id=836524877271269406&redirect_uri=https%3A%2F%2Fauth.landsmp.com&response_type=token&scope=identify";
         window.location.hash = "";
 
         document.getElementById("codeContainer").value = `/auth ${btoa(tokenType + " " + accessToken)}`;
